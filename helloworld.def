@@ -1,0 +1,33 @@
+Bootstrap: library
+From: ubuntu:20.04
+
+%post
+    # Install compilers and git
+    # -------------------------
+    apt update
+    apt install -y gcc \
+                   gfortran \
+                   git
+
+    # Clone git repo and compile
+    # Hello-World program
+    # --------------------------
+    git clone https://github.com/vineetsoni/singularity-hello-world.git
+    cd singularity-hello-world
+    gfortran -o helloworld.exe helloworld.f90
+    mv helloworld.exe /
+
+    # Clean the container to
+    # reduce its size
+    # ----------------------
+    cd ..
+    rm -rf singularity-hello-world
+    apt-get clean
+
+
+%runscript
+    /helloworld.exe
+
+
+%help
+This container has a hello-world program built with the GNU Fortran 9.3.0.
