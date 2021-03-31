@@ -1,14 +1,22 @@
 pipeline {
-    agent none
+    agent any
+    // Launch Build on master node
     node('master') {
         stage('Build') {
+            // Build Singularity container
             sh 'singularity build --fakeroot helloworld.sif helloworld.def'
-            stash 'singuilarity-build'
+            // Clean Singularity cache to save storage space
+            sh 'singularity cache clean --force'
+            // Stash the container to move to Kara for Test
+            stash 'singularity-build'
         }
     }
-    node('kara') {
+    // Launch test on Kara
+    node('kara-test') {
         stage('Test') {
+            // Retrieve stashed container
             unstash 'singularity-build'
+            // Run Singularity container
             sh './helloworld.sif'
         }
     }
