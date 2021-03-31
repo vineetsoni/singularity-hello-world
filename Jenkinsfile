@@ -1,6 +1,15 @@
 pipeline {
     agent any
     stages {
+        // Clone Git repo
+        stage('Clone') {
+            steps {
+                node('master') {
+                    // Clone git repository
+                    git 'https://github.com/vineetsoni/singularity-hello-world.git'
+                }
+            }
+        }
         // Launch Build on master node
         stage('Build') {
             steps {
