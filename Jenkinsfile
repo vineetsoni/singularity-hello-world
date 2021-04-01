@@ -15,7 +15,7 @@ pipeline {
             steps {
                 node('master') {
                     // Build Singularity container
-                    sh 'singularity build --fakeroot helloworld.sif helloworld.def'
+                    sh 'singularity build --fakeroot --force helloworld.sif helloworld.def'
                     // Clean Singularity cache to save storage space
                     sh 'singularity cache clean --force'
                     // Stash the container to move to Kara for Test
@@ -34,5 +34,19 @@ pipeline {
                 }
             }
         }
+    }
+    post {
+        always {
+            // Remove workspace to save storage
+            deleteDir()
+        }
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        // failure {
+        //     mail to: 'xxx@xxx.com',
+        //          subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+        //          body: "Something is wrong with ${env.BUILD_URL}"
+        // }
     }
 }
