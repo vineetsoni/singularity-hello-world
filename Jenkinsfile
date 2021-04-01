@@ -19,7 +19,7 @@ pipeline {
                     // Clean Singularity cache to save storage space
                     sh 'singularity cache clean --force'
                     // Stash the container to move to Kara for Test
-                    stash 'singularity-build'
+                    stash name: 'singularity-build', includes: '*.sif'
                 }
             }
         }
