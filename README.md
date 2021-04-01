@@ -4,6 +4,7 @@ This repository contains:
 
 - Hello-World program written in Fortran
 - Singularity definition file to build this container
+- Jenkinsfile to test the workflow
 
 
 ## Building container
